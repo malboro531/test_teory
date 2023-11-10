@@ -1,0 +1,255 @@
+1. ArrayList:
+
+- Дубликаты
+- Сохранение порядка добавления
+- Динамический массив
+- Доступ по индексу
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Создание ArrayList с элементами типа String
+        ArrayList<String> fruits = new ArrayList<>();
+
+        // Добавление элементов
+        fruits.add("яблоко");
+        fruits.add("банан");
+        fruits.add("вишня");
+
+        // Получение элемента по индексу
+        String firstFruit = fruits.get(0);
+        System.out.println("Первый фрукт: " + firstFruit);
+
+        // Итерация по элементам
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+}
+
+2. LinkedList:
+
+- Дубликаты
+- Сохранения порядка добавления
+- Двусвязный список: каждый элемент LinkedList содержит ссылку как на предыдущий, так и на следующий элемент в списке.
+Это позволяет эффективно добавлять и удалять элементы в любом месте списка.
+- Доступ к элементам: в LinkedList можно получить доступ к элементам как по индексу, так и по значению. Однако доступ по
+индексу менее эффективен, чем в ArrayList
+- Эффективное добавление и удаление
+- Не подходит для случайного доступа: LinkedList лучше подходит для ситуаций, где вам нужно многократно добавлять и
+удалять элементы в середине списка.
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        // Создание LinkedList с элементами типа Integer
+        LinkedList<Integer> numbers = new LinkedList<>();
+
+        // Добавление элементов
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+
+        // Удаление элемента по значению
+        numbers.remove(Integer.valueOf(2));
+
+        // Добавление элемента в начало списка
+        numbers.addFirst(0);
+
+        // Получение первого и последнего элементов
+        int firstNumber = numbers.getFirst();
+        int lastNumber = numbers.getLast();
+
+        System.out.println("Первое число: " + firstNumber);
+        System.out.println("Последнее число: " + lastNumber);
+
+        // Итерация по элементам
+        for (int number : numbers) {
+            System.out.println(number);
+        }
+    }
+}
+
+3. HashSet:
+
+- Нет дубликатов
+- Порядок элементов не гарантирован
+- Основан на хеш-таблице: Внутренняя реализация HashSet основана на хеш-таблице. Это делает операции добавления,
+удаления и поиска элементов очень эффективными.
+- Null-элементы: HashSet может содержать один null-элемент.
+
+public class HashSetExample {
+    public static void main(String[] args) {
+        // Создание HashSet с элементами типа String
+        Set<String> fruits = new HashSet<>();
+
+        // Добавление элементов
+        fruits.add("яблоко");
+        fruits.add("банан");
+        fruits.add("вишня");
+
+        // Дубликаты будут проигнорированы
+        fruits.add("яблоко");
+
+        // Удаление элемента
+        fruits.remove("банан");
+
+        // Проверка наличия элемента
+        boolean containsCherry = fruits.contains("вишня");
+
+        System.out.println("Содержит вишню: " + containsCherry);
+
+        // Итерация по элементам
+        for (String fruit : fruits) {
+            System.out.println(fruit);
+        }
+    }
+}
+
+4. LinkedHashSet
+
+- Нет дубликатов
+- Сохранение порядка добавления
+- Быстрый доступ: Операции, такие как добавление, удаление и проверка на наличие элемента, выполняются с хорошей
+производительностью, благодаря хэшированию элементов.
+
+public class LinkedHashSetExample {
+    public static void main(String[] args) {
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>();
+
+        linkedHashSet.add("яблоко");
+        linkedHashSet.add("банан");
+        linkedHashSet.add("вишня");
+
+        // Порядок элементов сохраняется
+        for (String fruit : linkedHashSet) {
+            System.out.println(fruit);
+        }
+    }
+}
+
+5. TreeSet:
+
+- Нет дубликатов
+- Упорядоченность: Элементы в TreeSet хранятся в отсортированном порядке. Это основывается на сравнении элементов с
+использованием их естественного порядка (если элементы реализуют интерфейс Comparable) или пользовательской логикой
+сравнения (если задан компаратор).
+- Быстродействие: хороший выбор для больших наборов данных
+- Красно-черное дерево: TreeSet основан на красно-черных деревьях, что обеспечивает эффективное хранение и обработку
+данных.
+
+    Красно-чёрные деревья используются для обеспечения баланса и эффективности операций вставки, удаления и поиска
+    элементов. Это делает их полезными в структурах данных, где требуется хранить данные в упорядоченном виде с хорошей
+    производительностью. В случае TreeSet, они помогают поддерживать элементы в упорядоченном виде, что позволяет быстро
+    выполнять операции добавления, удаления и поиска элементов.
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        TreeSet<String> treeSet = new TreeSet<>();
+
+        treeSet.add("яблоко");
+        treeSet.add("банан");
+        treeSet.add("вишня");
+        treeSet.add("дыня");
+
+        // Элементы вернутся в отсортированном порядке
+        for (String fruit : treeSet) {
+            System.out.println(fruit);
+        }
+    }
+}
+
+6. HashMap:
+
+- Уникальность ключей
+- Порядок элементов не гарантирован
+- Реализует отображение (ключ-значение) на основе хэш-таблицы.
+- HashMap позволяет хранить null-ключи и null-значения
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        // Создание экземпляра HashMap
+        Map<String, Integer> scores = new HashMap<>();
+
+        // Добавление элементов
+        scores.put("Анна", 95);
+        scores.put("Борис", 88);
+        scores.put("Василиса", 76);
+        scores.put("Георгий", 92);
+
+        // Получение значения по ключу
+        int score = scores.get("Борис");
+        System.out.println("Баллы Бориса: " + score);
+
+        // Проверка наличия ключа
+        boolean hasAnna = scores.containsKey("Анна");
+        System.out.println("Есть ли Анна в списке? " + hasAnna);
+
+        // Перебор всех элементов
+        for (Map.Entry<String, Integer> entry : scores.entrySet()) {
+            String name = entry.getKey();
+            int value = entry.getValue();
+            System.out.println(name + ": " + value);
+        }
+    }
+}
+
+7. LinkedHashMap:
+
+- Уникальность ключей
+- Сохранение порядка добавления
+- Реализует отображение на основе хэш-таблицы и связанного списка.
+
+public class LinkedHashMapExample {
+    public static void main(String[] args) {
+        // Создание LinkedHashMap
+        LinkedHashMap<Integer, String> linkedHashMap = new LinkedHashMap<>();
+
+        // Добавление элементов
+        linkedHashMap.put(3, "Третий");
+        linkedHashMap.put(1, "Первый");
+        linkedHashMap.put(2, "Второй");
+
+        // Вывод элементов в порядке вставки
+        for (Map.Entry<Integer, String> entry : linkedHashMap.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}
+
+8. TreeMap:
+
+- Уникальность ключей
+- Порядок элементов по ключу.
+- Производительность: TreeMap обеспечивает операции вставки, удаления и поиска элементов в логарифмическом времени
+(O(log n)), благодаря использованию красно-черного дерева для хранения данных.
+
+public class TreeMapExample {
+    public static void main(String[] args) {
+        // Создание TreeMap
+        TreeMap<Integer, String> treeMap = new TreeMap<>();
+
+        // Добавление элементов
+        treeMap.put(3, "Третий");
+        treeMap.put(1, "Первый");
+        treeMap.put(2, "Второй");
+
+        // Вывод элементов в отсортированном порядке
+        for (Integer key : treeMap.keySet()) {
+            System.out.println(key + ": " + treeMap.get(key));
+        }
+    }
+}
+
+HashSet vs. TreeSet:
+
+- Если вам важен быстрый доступ по ключу, используйте HashSet.
+- Если вам нужен набор в отсортированном порядке, используйте TreeSet.
+
+HashMap vs. TreeMap:
+
+- Если вам нужен быстрый доступ по ключу, используйте HashMap.
+- Если вам нужен набор в отсортированном порядке по ключу, используйте TreeMap.
+
+List vs. Set:
+
+Если вам нужно допускать дубликаты элементов и сохранять порядок, используйте List.
+Если вам нужно хранить уникальные элементы и порядок не имеет значения, используйте Set.

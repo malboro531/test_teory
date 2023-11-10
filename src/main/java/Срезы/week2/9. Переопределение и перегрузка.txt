@@ -1,0 +1,60 @@
+1. Перегрузка (overloading) методов в Java — это использование одного имени метода с разными параметрами.
+
+Пример перегрузки:
+
+    public class Assistant {
+
+        public void sayHello(String firstGuest) {
+            System.out.println("Добрый вечер, " + firstGuest + "!");
+        }
+
+        public void sayHello(String firstGuest, String secondGuest) {
+            System.out.println("Добрый день, " + firstGuest + " и " + secondGuest + "!");
+        }
+        public static void main(String[] args) {
+            Assistant assistant = new Assistant();
+            assistant.sayHello("Михаил", "Виталий");
+        }
+    }
+
+2. Переопределение метода (Overriding)
+    Переопределение метода в Java позволяет взять метод родительского класса и создать специфическую реализацию
+    в классе-наследнике.
+
+Пример переопределения:
+
+    public class Animal {
+
+       public void voice() {
+           System.out.println("Говори!");
+       }
+    }
+
+Позволяет заменить реализацию в классе-наследнике на примере кошки и собаки:
+
+    public class Cat extends Animal {
+
+       @Override
+       public void voice() {
+           System.out.println("Мяу!");
+       }
+    }
+
+    public class Dog extends Animal {
+
+       @Override
+       public void voice() {
+           System.out.println("Гав!");
+       }
+    }
+
+@Override (переопределён) аннотация сообщит компилятору, что это не ошибка, вы намеренно переопределяете метод.
+
+У переопределения методов класса в Java есть ряд ограничений.
+    - Аргументы должны оставаться такими же, как у метода родителя.
+
+    - Тип возвращаемого значения должен быть таким же, как у метода родителя.
+
+    - Модификатор доступа должен быть таким же, как у метода родителя.
+
+    - Окончательные методы (final) нельзя переопределять.

@@ -1,0 +1,160 @@
+Stream API — это способ работать со структурами данных в функциональном стиле.
+
+Примеры реализации Stream:
+
+    List<User> userList = new ArrayList<>(Arrays.asList(
+    new User("John", 33),
+    new User("Robert", 26),
+    new User("Mark", 26),
+    new User("Brandon", 42)));
+
+    List<User> sortedList = userList.stream()
+    .sorted(Comparator.comparingInt(User::getAge))
+    .collect(Collectors.toList());
+
+    sortedList.forEach(System.out::println);
+________________________________________________
+
+    List<String> list = new ArrayList<String>();
+    list.add("One");
+    list.add("Ten");
+    list.add("Three");
+
+    Stream stream = list.stream();
+    stream.filter(x-> x.toString().length() == 3).forEach(System.out::println);
+________________________________________________
+
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+List<Integer> evenSquares = numbers.stream()
+    .filter(n -> n % 2 == 0)  // Фильтруем только четные числа
+    .map(n -> n * n)         // Возводим в квадрат
+    .collect(Collectors.toList());  // Собираем результат в список
+
+System.out.println(evenSquares);  // Выводит: [4, 16, 36, 64, 100]
+________________________________________________
+
+Операторы можно разделить на две группы:
+- Промежуточные — обрабатывают поступающие элементы и возвращают стрим.
+Промежуточных операторов в цепочке обработки элементов может быть много.
+- Терминальные — обрабатывают элементы и завершают работу стрима, так что терминальный оператор
+в цепочке может быть только один.
+
+Некоторые промежуточные операторы:
+
+- filter(Predicate predicate) фильтрует стрим, пропуская только те элементы, что проходят по условию:
+
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    List<Integer> evenNumbers = numbers.stream()
+        .filter(n -> n % 2 == 0)
+        .collect(Collectors.toList()); // Оставляем только четные числа
+
+- map(Function mapper) даёт возможность создать функцию с помощью которой мы будем изменять каждый элемент и пропускать
+его дальше:
+
+    List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+    List<Integer> nameLengths = names.stream()
+        .map(String::length)
+        .collect(Collectors.toList()); // Получаем длину каждой строки
+
+- flatMap(Function<T, Stream<R>> mapper) — как и в случае с map, служат для преобразования в примитивный стрим, но
+разделяет поток на несколько и возвращает либо null, либо 1,2,3... в зависимости от потоков:
+
+    List<List<Integer>> nestedNumbers = Arrays.asList(
+        Arrays.asList(1, 2, 3),
+        Arrays.asList(4, 5, 6),
+        Arrays.asList(7, 8, 9)
+    );
+
+    List<Integer> flattenedList = nestedNumbers.stream()
+        .flatMap(List::stream)
+        .collect(Collectors.toList()); // Распаковываем списки в один плоский список
+
+- limit(long maxSize) – ограничивает стрим по количеству элементов:
+
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    List<Integer> firstThreeNumbers = numbers.stream()
+        .limit(3)
+        .collect(Collectors.toList()); // Оставляем первые три числа
+
+- skip(long n) – используется для пропуска первых n элементов в потоке и возвращения оставшихся элементов:
+
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    List<Integer> skippedNumbers = numbers.stream()
+        .skip(5)  // Пропустить первые 5 элементов
+        .collect(Collectors.toList());
+
+    System.out.println(skippedNumbers); // Выведет [6, 7, 8, 9, 10]
+
+- sorted() - сортировка элементов:
+
+    List<Integer> numbers = Arrays.asList(4, 2, 7, 1, 8, 3);
+
+    List<Integer> sortedNumbers = numbers.stream()
+        .sorted()
+        .collect(Collectors.toList()); // Сортировка по возрастанию
+
+- distinct() — - удаление дубликатов:
+
+    List<String> colors = Arrays.asList("red", "green", "blue", "red", "green");
+
+    List<String> uniqueColors = colors.stream()
+        .distinct()
+        .collect(Collectors.toList()); // Удаляем дублирующиеся цвета
+
+
+Терминальные операторы:
+
+- forEach(Consumer<T> action): Метод forEach выполняет заданное действие для каждого элемента потока:
+
+    List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+    names.stream()
+        .forEach(name -> System.out.println("Hello, " + name));
+
+- count() – возвращает количество элементов стрима
+
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+
+    long count = numbers.stream()
+        .count(); // Подсчитываем количество элементов
+
+- collect(Collector<T, A, R> collector) - сбор элементов в коллекцию:
+
+    List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+    Set<String> nameSet = names.stream()
+        .collect(Collectors.toSet()); // Собираем уникальные имена во множество
+
+- min(Comparator<T> comparator) - поиск минимального элемента:
+
+    List<Integer> numbers = Arrays.asList(5, 2, 8, 1, 9);
+
+    Optional<Integer> minNumber = numbers.stream()
+        .min(Integer::compareTo); // Находим минимальное число
+
+- anyMatch(Predicate<T> predicate) - проверка соответствия элементов предикату:
+
+    List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+    boolean anyMatch = names.stream()
+        .anyMatch(name -> name.startsWith("B")); // Проверяем, есть ли имена, начинающиеся с "B"
+
+- findFirst() - поиск первого элемента:
+
+    List<Integer> numbers = Arrays.asList(5, 2, 8, 1, 9);
+
+    Optional<Integer> firstNumber = numbers.stream()
+        .findFirst(); // Находим первое число
+
+некоторые методы Collections:
+    - toList() — собирает элементы в List:
+    List<Integer> list = Stream.of(99, 2, 3).collect(Collectors.toList());
+    -toSet() — cобирает элементы в множество:
+    Set<Integer> set = Stream.of(99, 2, 3).collect(Collectors.toSet());
+    - counting() — Подсчитывает количество элементов:
+    Long count = Stream.of("1", "2", "3", "4").collect(Collectors.counting());

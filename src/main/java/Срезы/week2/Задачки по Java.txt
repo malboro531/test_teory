@@ -1,0 +1,100 @@
+1. В заданной строке посчитать количество точек и запятых.
+
+public class Start {
+    public static void main(final String[] args) {      
+        String string = "В зада,нной. .строке . ,посчита,ть, количество т,очек ,,.и зап.я,тых";
+        int tochki = 0;
+        int zapyatai = 0;
+        
+        for (char ch : string.toCharArray()) {
+            if (ch == '.') {
+                tochki++;
+            }
+            else {
+                if (ch == ',') {
+                    zapyatai++;
+                }
+            }
+        }
+        
+        System.out.println("количество точек: " + tochki + "  запятых: " + zapyatai);     
+    }
+}
+
+2. Написать функцию, принимающую на вход String[]. Исходный массив менять нельзя!
+   Требуется найти строки содержащие одинаковый набор символов и вывести на консоль в виде:
+   набор символов (в любом порядке) = индексы строк в исходном массиве через запятую (в любом порядке).
+   Если у строки нет парной с ней строки с одинаковым набором символов - то печать её не надо.
+        Пример (форматирование может быть любое):
+        подаём на вход: {"qwe","wqe","qwee","a","a"};
+        вывод на консоль: a = 3, 4; eqw = 0, 1.
+   Набор символов QQ и Q - разный.
+   Плюсом будет написание теста для тестирования функции.
+
+КОД:
+    import java.util.ArrayList;
+    import java.util.Arrays;
+    import java.util.List;
+    import java.util.Map;
+    import java.util.HashMap;
+
+    public class StringGroups {
+
+        public static void main(String[] args) {
+            String[] input = {"qwe", "wqe", "qwee", "a", "a"};
+            Map<String, List<Integer>> groups = findStringGroups(input);
+
+            for (Map.Entry<String, List<Integer>> entry : groups.entrySet()) {
+                List<Integer> indexes = entry.getValue();
+                if (indexes.size() > 1) {
+                    System.out.print(entry.getKey() + " = ");
+                    for (int i = 0; i < indexes.size(); i++) {
+                        System.out.print(indexes.get(i));
+                        if (i < indexes.size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println();
+                }
+            }
+        }
+
+        public static Map<String, List<Integer>> findStringGroups(String[] strings) {
+            Map<String, List<Integer>> groups = new HashMap<>();
+
+            for (int i = 0; i < strings.length; i++) {
+                char[] chars = strings[i].toCharArray();
+                Arrays.sort(chars);
+                String sortedString = new String(chars);
+
+                groups.putIfAbsent(sortedString, new ArrayList<>());
+                groups.get(sortedString).add(i);
+            }
+            return groups;
+        }
+    }
+
+ТЕСТ:
+    import org.example.StringGroups;
+    import org.junit.Test;
+
+    import java.util.List;
+    import java.util.Map;
+
+    import static org.junit.Assert.assertEquals;
+
+    public class ExampleTest {
+
+        @Test
+        public void testFindStringGroups() {
+            String[] input = {"qwe", "wqe", "qwee", "a", "a"};
+            Map<String, List<Integer>> result = StringGroups.findStringGroups(input);
+
+            assertEquals(List.of(0, 1), result.get("eqw"));
+            assertEquals(List.of(3, 4), result.get("a"));
+        }
+    }
+
+3.
+
+

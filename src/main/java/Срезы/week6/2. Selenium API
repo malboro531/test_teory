@@ -1,0 +1,175 @@
+Методы класса WebDriver:
+1. Открытие и закрытие браузера:
+1.1. Открытие браузера определенного типа:
+    WebDriver driver = new ChromeDriver();
+1.2. Закрытие браузера после выполнения тестов:
+    driver.quit();
+1.3. Закрытие текущего активного окна браузера:
+    driver.close();
+
+2. Навигация:
+2.1. Переход по URL-адресам:
+    driver.get("https://www.example.com");
+2.2. Обновление страницы:
+    driver.navigate().refresh();
+2.3. Переходы назад или вперед по истории браузера:
+    driver.navigate().back() или .forward();
+
+3. Работа с элементами на веб-странице:
+3.1. Поиск элементов по различным критериям (ID, имя, класс, XPath и т. д.):
+    WebElement element = driver.findElement(By.id("elementId"));
+3.2. Взаимодействие с элементами:
+а) Ввод текста:
+    element.sendKeys("Текст для ввода");
+б) Клик:
+    element.click();
+в) Выбор элемента из выпадающего списка:
+    Select select = new Select(element);
+    select.selectByVisibleText("Опция 1");
+
+3.3. Получение информации об элементах:
+а) Получение текста элемента:
+    String elementText = element.getText();
+б) Получение значения атрибута:
+    String hrefAttributeValue = element.getAttribute("href");
+
+4. Управление окнами и вкладками:
+4.1. Открытие новых окон и вкладок:
+а) Opens a new tab and switches to new tab:
+    driver.switchTo().newWindow(WindowType.TAB);
+б) Opens a new window and switches to new window:
+    driver.switchTo().newWindow(WindowType.WINDOW);
+4.2. Переключение между окнами и вкладками:
+    String originalWindow = driver.getWindowHandle();
+    driver.switchTo().window(originalWindow);
+
+5. Работа с фреймами и вложенными элементами:
+5.1. Переключение на фреймы (iframe) и работа внутри них:
+    driver.switchTo().frame(0);
+    driver.switchTo().defaultContent();
+5.2. Работа с вложенными элементами:
+    WebElement parentElement = driver.findElement(By.id("parentElementId"));
+    WebElement childElement = parentElement.findElement(By.id("childElementId"));
+
+6. Управление браузерными настройками:
+6.1. Управление параметрами браузера (например, установка разрешения экрана):
+    options.addArguments("--window-size=1920,1080");
+    options.addArguments("--start-fullscreen");
+6.2. управления различными настройками браузера manage():
+а) Настроить параметры окна браузера, такие как размер и положение окна:
+    driver.manage().window().maximize(); // Максимизировать окно
+    driver.manage().window().setSize(new Dimension(800, 600)); // Установить размер окна
+б) Настроить различные таймауты для действий WebDriver:
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); // Неявное ожидание
+    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS); // Ожидание загрузки страницы
+в) Получать логи браузера, такие как логи JavaScript или логи браузера (например, ошибки JavaScript):
+    LogEntries logs = driver.manage().logs().get("browser"); // Получить логи браузера
+г) Удалить все cookie из текущего браузера:
+    driver.manage().deleteAllCookies();
+д) Добавить указанный cookie в текущий браузер:
+    Cookie cookie = new Cookie("cookieName", "cookieValue");
+    driver.manage().addCookie(cookie);
+е) Получить набор всех cookie, доступных в текущем браузере:
+    WebDriver driver = new ChromeDriver();
+    Set<Cookie> cookies = driver.manage().getCookies();
+
+7. Выполнение JavaScript кода:
+7.1. Получение размеров экрана (для скриншотов):
+    public static float getPageSize () {
+        Object output = ((JavascriptExecutor) javascriptExecutor).executeScript("return window.devicePixelRatio");
+        String value = String.valueOf(output);
+        float windowDPR = Float.parseFloat(value);
+        return windowDPR;
+    }
+7.2. Скролл страницы на заданное расстояние в пикселях по X и по Y:
+    public static void scrollBy(int x, int y) {
+        String script = "window.scrollBy(" + x + "," + y + ");";
+        javascriptExecutor.executeScript(script);
+    }
+7.3. Скролл страницы на элемент:
+    public static void scrollToElement(WebElement element){
+        String script = "arguments[0].scrollIntoView(false);";
+        javascriptExecutor.executeScript(script, element);
+    }
+7.4. Установка невидимости веб элемента:
+    public static void displayNone(WebElement element) {
+        String script = "arguments[0].style.display='none';";
+        javascriptExecutor.executeScript(script, element);
+    }
+
+8. Обработка алертов (всплывающее окно JavaScript, которое выводит сообщение или предупреждение пользователю и
+блокирует действия на веб-странице до тех пор, пока пользователь не примет или закроет алерт):
+8.1. Переключение на алерт:
+    Alert alert = driver.switchTo().alert();
+8.2. Принятие алерта:
+    alert.accept();
+8.3. Отклонение алерта:
+    alert.dismiss();
+8.4. Получение текста из алерта:
+    String alertText = alert.getText();
+    System.out.println("Текст алерта: " + alertText);
+8.5. Ввод текста в алерт:
+    alert.sendKeys("Текст для ввода");
+8.6. Ожидание алерта:
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    wait.until(ExpectedConditions.alertIsPresent());
+8.7. Переключение обратно на основную страницу после работы с alert:
+    driver.switchTo().defaultContent();
+
+9. Обработка фреймов (это вложенное окно (документ), которое встраивается в текущую веб-страницу. Он может содержать
+собственный набор элементов, текста и кода HTML):
+9.1. Переключение на iframe по его индексу:
+    driver.switchTo().frame(0);
+9.2. Переключение на iframe по его имени или ID:
+    driver.switchTo().frame("frameName");
+9.3. Переключение на iframe, используя элемент iframe как параметр:
+    WebElement iframeElement = driver.findElement(By.id("iframeId"));
+    driver.switchTo().frame(iframeElement);
+9.4. Переключение обратно на основную страницу:
+    driver.switchTo().defaultContent();
+
+Класс Actions в Selenium используется для выполнения сложных действий с элементами на веб-странице:
+1. Клик с удержанием клавиши Shift:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.keyDown(Keys.SHIFT).click(element).keyUp(Keys.SHIFT).build().perform();
+
+2. Двойной клик на элементе:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.doubleClick(element).build().perform();
+
+3. Перетаскивание элемента на другое место:
+    Actions actions = new Actions(driver);
+    WebElement sourceElement = driver.findElement(By.id("sourceElementId"));
+    WebElement targetElement = driver.findElement(By.id("targetElementId"));
+    actions.dragAndDrop(sourceElement, targetElement).build().perform();
+
+4. Клик правой кнопкой мыши на элементе:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.contextClick(element).build().perform();
+
+5. Наведение курсора мыши на элемент:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.moveToElement(element).build().perform();
+
+6. Выделение текста на странице (Shift + стрелка влево):
+    Actions actions = new Actions(driver);
+    WebElement body = driver.findElement(By.tagName("body"));
+    actions.clickAndHold(body).sendKeys(Keys.ARROW_LEFT).release().build().perform();
+
+7. Выполнение контекстного клика на элементе:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.contextClick(element).build().perform();
+
+8. Скроллинг к элементу на странице:
+    Actions actions = new Actions(driver);
+    WebElement element = driver.findElement(By.id("elementId"));
+    actions.moveToElement(element).perform();
+
+9. Нажатие клавиш на клавиатуре (например, Enter):
+    Actions actions = new Actions(driver);
+    actions.sendKeys(Keys.ENTER).build().perform();

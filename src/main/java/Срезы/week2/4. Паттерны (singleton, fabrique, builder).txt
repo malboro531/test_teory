@@ -1,0 +1,225 @@
+Паттерн проектирования - это типичные способы решения часто возникающих задач в сфере разработки ПО.
+В паттернах предлагаются наиболее оптимальные способы реализации той или иной задачи.
+
+1. Singleton для создания одного экземпляра класса.
+    В классе есть ПРИВАТНЫЙ конструктор, а это значит, что:
+    - Мы не сможем создать объект класса как мы это привыкли делать.
+    - мы сделали приватным конструктор по умолчанию. Это значит, что мы не сможем наследовать класс Singleton.
+    INSTANCE имеет доступ public. Это значит, что мы можем обращаться к нему из любого другого класса.
+
+    public class MySingleton {
+
+        private MySingleton() {
+            System.out.println("Singleton created!");
+        }
+
+        public static final MySingleton INSTANCE = new MySingleton();
+
+        public void printName() {
+            System.out.println("I am a Singleton!");
+        }
+    }
+
+    public class Test {
+        public static void main(String[] args) {
+
+        MySingleton.INSTANCE.printName();
+
+            System.out.println(MySingleton.INSTANCE.getClass());
+        }
+    }
+
+2. Factory (Фабрика) для создания класса, который создает объекты разного типа.
+
+    Начнем с общего кофейного класса:
+    public class Coffee {
+        public void grindCoffee(){
+            // перемалываем кофе
+        }
+        public void makeCoffee(){
+            // делаем кофе
+        }
+        public void pourIntoCup(){
+            // наливаем в чашку
+        }
+    }
+
+    Далее создадим его наследников:
+    public class Americano extends Coffee {}
+    public class Cappuccino extends Coffee {}
+    public class CaffeLatte extends Coffee {}
+    public class Espresso extends Coffee {}
+
+    Создадим enum и определим в нем типы кофе, на которые мы принимаем заказы
+    public enum CoffeeType {
+        ESPRESSO,
+        AMERICANO,
+        CAFFE_LATTE,
+        CAPPUCCINO
+    }
+
+    напишем код нашей кофейни
+    public class CoffeeShop {
+
+        public Coffee orderCoffee(CoffeeType type) {
+            Coffee coffee = null;
+
+            switch (type) {
+                case AMERICANO:
+                    coffee = new Americano();
+                    break;
+                case ESPRESSO:
+                    coffee = new Espresso();
+                    break;
+                case CAPPUCCINO:
+                    coffee = new Cappuccino();
+                    break;
+                case CAFFE_LATTE:
+                    coffee = new CaffeLatte();
+                    break;
+            }
+
+            coffee.grindCoffee();
+            coffee.makeCoffee();
+            coffee.pourIntoCup();
+
+            System.out.println("Вот ваш кофе! Спасибо, приходите еще!");
+            return coffee;
+        }
+    }
+
+3. Builder
+   Представим, что нам нужно создать класс с большим количеством параметров - например, класс Person
+
+    public class Person {
+
+        private String name;
+        private String surname;
+        private int age;
+        private int height;
+        private int weight;
+        private Set<Person> parents;
+    }
+
+    Представим, что мы хотим для данного класса задать все возможные варианты конструкторов, которые нам могут
+    понадобиться. Зачем? Чтобы в разных частях кода использовать разные конструкторы и создавать экземпляры
+    класса Person с разным количеством заполненных полей
+
+    public class Person {
+
+        private String name;
+        private String surname;
+        private int age;
+        private int height;
+        private int weight;
+        private Set<Person> parents;
+
+        Person (String name, String surname){
+            this.name = name;
+            this.surname = surname;
+        }
+
+        Person (String name, String surname, int age){
+            this.name = name;
+            this.surname = surname;
+            this.age = age;
+        }
+
+        Person (String name, String surname, int age, int height){
+            this.name = name;
+            this.surname = surname;
+            this.age = age;
+            this.height = height;
+        }
+
+        //... more constructors here
+    }
+
+    public class Person {
+
+        private String name;
+        private String surname;
+        private int age;
+        private int height;
+        private int weight;
+        private Set<Person> parents;
+
+       /* ---=== getters are supposed to be here. We skipped this part of code to make it simple ===--- */
+
+        public static class Builder {
+            private Person newPerson;
+
+            public Builder() {
+                newPerson = new Person();
+            }
+
+            public Builder withName(String name){
+                newPerson.name = name;
+                return this;
+            }
+
+            public Builder withSurname(String surname){
+                newPerson.surname = surname;
+                return this;
+            }
+
+            public Builder withAge(int age){
+                newPerson.age = age;
+                return this;
+            }
+
+            public Builder withHeight(int height){
+                newPerson.height = height;
+                return this;
+            }
+
+            public Builder withWeight(int weight){
+                newPerson.weight = weight;
+                return this;
+            }
+
+            public Builder withParents(Set<Person> parents){
+                newPerson.parents = parents;
+                return this;
+            }
+
+            public Person build(){
+                return newPerson;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Person myPerson = new Person.Builder()
+                .withName("Jane")
+                .withSurname("Doe")
+                .withAge(32)
+                .withHeight(165)
+                .withWeight(70)
+!!!             .build();
+    }
+
+4. Multiton — это вариация паттерна Singleton (Одиночка), который обеспечивает, что у класса есть только один экземпляр,
+но с некоторыми различиями. В отличие от Singleton, где есть только один единственный экземпляр класса, Multiton
+позволяет создавать несколько именованных экземпляров (или "экземпляров-братьев") для одного и того же класса. Это
+особенно полезно, когда вам нужно гарантировать, что для каждого именованного контекста существует только один экземпляр.
+
+Основные черты Multiton паттерна:
+
+- Множество экземпляров: Multiton может иметь несколько именованных экземпляров для одного класса.
+- Управление именами: Каждый экземпляр Multiton класса связан с уникальным именем или ключом.
+- Гарантированная уникальность: Для каждого имени существует только один экземпляр. Если вы запрашиваете экземпляр с
+определенным именем, Multiton возвращает существующий экземпляр, если он существует, или создает новый, если нет.
+- Глобальный доступ: Multiton обеспечивает глобальный доступ к своим экземплярам через их уникальные имена.
+- Пример использования Multiton может быть в контексте управления соединениями к базам данных. Вы создаете Multiton
+класс, который позволяет вам создавать и управлять несколькими соединениями, каждое с уникальным именем (например,
+"main_db", "user_data", "logs"). Таким образом, вы можете обеспечить, что для каждой базы данных существует только одно
+соединение, связанное с этим именем.
+
+Преимущества Multiton паттерна включают в себя:
+
+- Гарантированная уникальность экземпляров по именам.
+- Глобальный доступ к экземплярам через имена.
+- Возможность группировки и управления различными контекстами или ресурсами.
+- Однако необходимо аккуратно использовать Multiton, так как он может создавать глобальные зависимости между
+компонентами системы, и его неправильное использование может привести к сложностям в тестировании и сопровождении кода.

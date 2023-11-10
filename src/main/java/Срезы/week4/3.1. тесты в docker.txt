@@ -1,0 +1,2 @@
+testImplementation "org.testcontainers:testcontainers:1.18.0" тестируем используя данную зависимость
+связываем тест с портом контейнера и запускаем

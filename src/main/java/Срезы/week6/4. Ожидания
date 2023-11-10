@@ -1,0 +1,42 @@
+1. Implicit Wait (Неявное ожидание):
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+Неявное ожидание устанавливается глобально для всего WebDriver и действует на протяжении всего времени выполнения теста.
+Если WebDriver не может найти элемент сразу, он будет ждать указанное количество времени перед генерацией исключения.
+
+2. Explicit Wait (Явное ожидание)
+Явное ожидание позволяет явно задать условия ожидания для конкретных действий, например, ожидание появления элемента
+или определенного состояния элемента.
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+2.1. Ожидание видимости элемента по локатору (visibilityOfElementLocated):
+    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementId")));
+2.2. Ожидание, что элемент станет кликабельным (elementToBeClickable):
+    WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id("elementId")));
+2.3. Ожидание текста в элементе (textToBePresentInElement):
+    boolean isTextPresent = wait.until(ExpectedConditions.textToBePresentInElement(element, "Ожидаемый текст"));
+2.4. Ожидание исчезновения элемента по локатору (invisibilityOfElementLocated):
+    boolean isElementInvisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("elementId")));
+2.5. Ожидание наличия элемента по локатору (presenceOfElementLocated):
+    WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("elementId")));
+2.6. Ожидание заголовка страницы (titleIs):
+    boolean isTitleCorrect = wait.until(ExpectedConditions.titleIs("Ожидаемый заголовок"));
+2.7. Ожидание, что заголовок страницы содержит текст (titleContains):
+    boolean isTitleContains = wait.until(ExpectedConditions.titleContains("Ожидаемый текст"));
+
+3. Fluent Wait (Плавное ожидание):
+    Wait<WebDriver> wait = new FluentWait<>(driver)
+        .withTimeout(Duration.ofSeconds(30))
+        .pollingEvery(Duration.ofSeconds(2))
+        .ignoring(NoSuchElementException.class);
+    WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementId")));
+Плавное ожидание позволяет настроить ожидание с более гибкими параметрами, такими как интервал ожидания и условия
+прерывания ожидания. Это может быть полезно в случаях, когда элемент появляется не сразу, но необходимо ждать, пока он
+не появится.
+
+4. Thread.sleep():
+    try {
+        Thread.sleep(5000); // Пауза в 5 секунд
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+Thread.sleep() не является ожиданием, предоставляемым Selenium, но это пауза в выполнении кода. Его следует использовать
+осторожно, так как ожидание задается жестким временем и не учитывает динамические изменения на странице.

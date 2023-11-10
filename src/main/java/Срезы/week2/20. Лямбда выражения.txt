@@ -1,0 +1,56 @@
+Лямбда-выражение — упрощённая запись анонимного класса, реализующего функциональный интерфейс. Они часто используются
+вместе с функциональными интерфейсами, которые имеют только один абстрактный метод.
+Лямбда-выражения упрощают написание анонимных функций и улучшают читаемость кода, особенно при работе с потоками данных
+и коллекциями.
+
+// Интерфейс, представляющий функцию, принимающую два числа и возвращающую результат
+    interface MathOperation {
+        int operation(int a, int b);
+    }
+
+    public class LambdaExample {
+        public static void main(String[] args) {
+            // Лямбда-выражение для сложения
+            MathOperation addition = (a, b) -> a + b;
+
+            int result = addition.operation(5, 3);
+            System.out.println("Результат сложения: " + result); // Выведет: Результат сложения: 8
+        }
+    }
+
+// Лямбда-выражение для итерации по списку:
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class LambdaExample {
+        public static void main(String[] args) {
+            List<String> fruits = new ArrayList<>();
+            fruits.add("яблоко");
+            fruits.add("банан");
+            fruits.add("вишня");
+
+            // Итерация по списку с использованием лямбда-выражения
+            fruits.forEach(fruit -> System.out.println(fruit));
+        }
+    }
+
+// Фильтрация списка с использованием лямбда-выражения:
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class LambdaExample {
+        public static void main(String[] args) {
+            List<Integer> numbers = new ArrayList<>();
+            numbers.add(5);
+            numbers.add(12);
+            numbers.add(8);
+            numbers.add(3);
+
+            // Фильтрация чисел больше 5
+            List<Integer> filteredNumbers = numbers.stream()
+                    .filter(number -> number > 5)
+                    .collect(Collectors.toList());
+
+            System.out.println("Числа больше 5: " + filteredNumbers); // Выведет: Числа больше 5: [12, 8]
+        }
+    }

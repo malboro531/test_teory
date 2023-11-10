@@ -1,0 +1,57 @@
+Паттерн "Page Object" (PO) - это популярный шаблон проектирования в автоматизации тестирования, который используется для
+организации и управления взаимодействием с веб-страницами или пользовательскими интерфейсами. Он помогает создать
+абстрактный уровень для представления веб-страниц и их элементов, что делает тесты более структурированными, понятными и
+легкими в поддержке.
+
+public class LoginPage {
+    private WebDriver driver;
+
+    // Локаторы элементов на странице
+    private By usernameInput = By.id("username");
+    private By passwordInput = By.id("password");
+    private By loginButton = By.id("login-button");
+
+    // Конструктор класса
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    // Методы для взаимодействия с элементами на странице
+    public void enterUsername(String username) {
+        driver.findElement(usernameInput).sendKeys(username);
+    }
+
+    public void enterPassword(String password) {
+        driver.findElement(passwordInput).sendKeys(password);
+    }
+
+    public void clickLoginButton() {
+        driver.findElement(loginButton).click();
+    }
+
+    // Дополнительные методы для логики страницы (например, проверки успешного входа)
+}
+
+public class LoginTest {
+    private WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Инициализация WebDriver и открытие страницы
+    }
+
+    @Test
+    public void testLogin() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterUsername("myusername");
+        loginPage.enterPassword("mypassword");
+        loginPage.clickLoginButton();
+
+        // Дополнительные проверки после входа
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Завершение сеанса и закрытие браузера
+    }
+}

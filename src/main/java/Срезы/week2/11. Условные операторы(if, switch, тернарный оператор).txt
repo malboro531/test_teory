@@ -1,0 +1,39 @@
+1. if
+    if(2 * 2 == 4){
+        System.out.println("Программа выполняется");
+    }
+
+1.1. if-else
+    if(2 * 2 == 5){
+        System.out.println("Программа выполняется");
+    } else{
+        System.out.println("Условие ошибочно");
+    }
+
+2. switch
+    public class Main {
+
+        //Создадим простое перечисление дней недели
+        private static enum DayOfTheWeek{
+            MON, TUE, WED, THU, FRI, SAT, SUN
+        }
+
+        public static void main(String[] args) {
+            //Выбираем понедельник (MON)
+            var dayOfTheWeek = DayOfTheWeek.MON;
+
+            switch (dayOfTheWeek){
+                case MON:
+                    System.out.println("Понедельник");
+                    break;
+                case TUE:
+                    System.out.println("Вторник");
+                    break;
+                default:
+                    System.out.println("Другой день недели");
+            }
+        }
+    }
+
+3. тернарный
+    String answer = "условие" ? "Условие верно" : "Условие ошибочно";

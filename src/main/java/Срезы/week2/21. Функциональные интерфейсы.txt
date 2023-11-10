@@ -1,0 +1,31 @@
+Функциональные интерфейсы в Java - это интерфейсы, которые содержат только один абстрактный метод. Они позволяют
+использовать лямбда-выражения для создания анонимных функций. Вот несколько примеров функциональных интерфейсов в Java
+соответствующих стандартной библиотеке:
+
+1. java.lang.Runnable - содержит метод void run(), который выполняет некоторую операцию.
+    Runnable myRunnable = () -> System.out.println("Hello, World!");
+    myRunnable.run();
+
+2. java.util.function.Predicate - содержит метод boolean test(T t), который выполняет проверку для объекта типа T.
+    Predicate<Integer> isEven = (n) -> n % 2 == 0;
+    System.out.println(isEven.test(4)); // Выведет true
+
+3. java.util.function.Consumer - содержит метод void accept(T t), который выполняет операции над объектом типа T, но
+ничего не возвращает.
+    Consumer<String> printUpperCase = (str) -> System.out.println(str.toUpperCase());
+    printUpperCase.accept("hello"); // Выведет "HELLO"
+
+4. java.util.function.Function - содержит метод R apply(T t), который выполняет операции над объектом типа T и
+возвращает объект типа R.
+    Function<Integer, Integer> addOne = (n) -> n + 1;
+    System.out.println(addOne.apply(5)); // Выведет 6
+
+5. java.util.function.Supplier - содержит метод T get(), который возвращает объект типа T. Он не принимает аргументов,
+но может быть использован для ленивой инициализации.
+    Supplier<String> lazyInitialization = () -> "Initialized lazily";
+    System.out.println(lazyInitialization.get());
+
+6. java.util.function.BiFunction - содержит метод R apply(T t, U u), который выполняет операции над двумя аргументами и
+возвращает объект типа R.
+    BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
+    System.out.println(add.apply(3, 4)); // Выведет 7

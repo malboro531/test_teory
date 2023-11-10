@@ -1,0 +1,149 @@
+В Java дженерики позволяют создавать классы, интерфейсы и методы, которые работают с типами данных, которые могут быть
+указаны при их использовании. Это увеличивает безопасность и читаемость кода.
+
+1. Простой класс с дженериком:
+    public class Box<T> {
+        private T value;
+
+        public Box(T value) {
+            this.value = value;
+        }
+
+        public T getValue() {
+            return value;
+        }
+    }
+
+В этом примере T - это параметр типа, который будет заменен фактическим типом при создании объекта Box.
+Пример использования:
+
+    Box<Integer> intBox = new Box<>(42);
+    int value = intBox.getValue();
+
+    Box<String> strBox = new Box<>("Hello, Generics!");
+    String text = strBox.getValue();
+
+2. Дженерики с ограничениями:
+    public class MathUtils {
+        public static <T extends Number> double sum(T a, T b) {
+            return a.doubleValue() + b.doubleValue();
+        }
+    }
+
+В этом примере T ограничен классом Number, что означает, что a и b должны быть объектами, унаследованными от Number.
+Пример использования:
+
+    double result = MathUtils.sum(3.5, 2); // Работает, так как оба аргумента - числа
+
+3. Дженерики в интерфейсах:
+    public interface List<T> {
+        void add(T element);
+        T get(int index);
+    }
+
+Это позволяет реализовать список для различных типов данных.
+
+4. Дженерики в коллекциях:
+    List<String> names = new ArrayList<>();
+    names.add("Alice");
+    names.add("Bob");
+    String firstName = names.get(0);
+
+5. Дженерики в потоках данных (Stream API):
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+    double average = numbers.stream()
+        .mapToDouble(Integer::doubleValue)
+        .average()
+        .orElse(0);
+
+
+Понятия T, R и т.д. часто используются для обозначения параметров типа в дженериках.
+Вот как они могут быть использованы:
+
+1. T - это общепринятое соглашение для обозначения параметра типа. В дженерических классах, интерфейсах и методах T
+обычно означает, что это место будет заменено фактическим типом данных, указанным при использовании дженерика.
+    public class Box<T> {
+        private T value;
+
+        public Box(T value) {
+            this.value = value;
+        }
+
+        public T getValue() {
+            return value;
+        }
+    }
+
+В этом примере T означает, что Box является дженериком, и тип T будет заменен фактическим типом при создании объекта Box.
+
+2. R - это также соглашение для обозначения второго параметра типа в методах или классах, когда требуется два параметра
+типа.
+    public class Pair<T, R> {
+        private T first;
+        private R second;
+
+        public Pair(T first, R second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public T getFirst() {
+            return first;
+        }
+
+        public R getSecond() {
+            return second;
+        }
+    }
+
+Здесь Pair - это дженерический класс с двумя параметрами типа T и R, которые могут представлять разные типы данных.
+
+Эти соглашения (например, T, R, E для элементов коллекций) помогают улучшить читаемость кода и сделать его более
+обобщенным, что особенно полезно в контексте дженериков.
+
+3. E - обычно используется для обозначения элементов в коллекциях
+    public class Stack<E> {
+        private List<E> elements = new ArrayList<>();
+
+        public void push(E element) {
+            elements.add(element);
+        }
+
+        public E pop() {
+            if (!elements.isEmpty()) {
+                return elements.remove(elements.size() - 1);
+            }
+            return null;
+        }
+    }
+
+4. K и V - часто используются для ключей и значений в контейнерах
+    public class KeyValue<K, V> {
+        private K key;
+        private V value;
+
+        public KeyValue(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
+
+5. N - для числовых значений или чисел
+    public class Calculator<N extends Number> {
+        public N add(N a, N b) {
+            if (a instanceof Integer) {
+                return (N) Integer.valueOf(a.intValue() + b.intValue());
+            } else if (a instanceof Double) {
+                return (N) Double.valueOf(a.doubleValue() + b.doubleValue());
+            }
+            return null;
+        }
+    }

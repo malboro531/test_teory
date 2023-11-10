@@ -1,0 +1,56 @@
+DML, DCL, TCL и DDL - это четыре основных категории команд, используемых в управлении базами данных (БД) в контексте
+языка SQL (Structured Query Language). Каждая из них выполняет разные функции в управлении данными и доступе к данным в
+БД. Вот краткое описание каждой категории:
+
+1. DML (Data Manipulation Language):
+
+DML команды используются для манипуляции данными в БД.
+Основные DML команды включают SELECT, INSERT, UPDATE и DELETE.
+- SELECT используется для извлечения данных из таблицы.
+SELECT first_name, last_name FROM employees WHERE department = 'HR';
+- INSERT используется для добавления новых записей в таблицу.
+INSERT INTO products (product_id, product_name, price) VALUES (101, 'Laptop', 899.99);
+- UPDATE используется для обновления существующих записей в таблице.
+UPDATE customers SET email = 'new.email@example.com' WHERE customer_id = 123;
+- DELETE используется для удаления записей из таблицы.
+DELETE FROM orders WHERE order_id = 456;
+
+2. DCL (Data Control Language):
+
+DCL команды управляют правами доступа и безопасностью данных.
+Основные DCL команды включают GRANT и REVOKE.
+- GRANT предоставляет определенным пользователям или ролям определенные привилегии на выполнение операций с данными.
+GRANT SELECT, INSERT ON employees TO user1;
+- REVOKE отменяет или удаляет ранее предоставленные привилегии.
+REVOKE INSERT ON products FROM user2;
+
+3. TCL (Transaction Control Language):
+
+TCL команды управляют транзакциями в БД.
+Основные TCL команды включают COMMIT, ROLLBACK и SAVEPOINT.
+- COMMIT фиксирует изменения, сделанные в рамках текущей транзакции, и сохраняет их в БД.
+COMMIT;
+- ROLLBACK отменяет изменения, сделанные в текущей транзакции, и возвращает БД к предыдущему состоянию.
+ROLLBACK;
+- SAVEPOINT создает точку сохранения, которая может быть использована для частичного отката изменений.
+SAVEPOINT sp1;
+
+4. DDL (Data Definition Language):
+
+DDL команды используются для определения структуры БД, таблиц и индексов.
+Основные DDL команды включают CREATE, ALTER и DROP.
+- CREATE используется для создания новых объектов БД, таких как таблицы, индексы и представления.
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    department VARCHAR(50)
+);
+- ALTER используется для изменения структуры существующих объектов, например, добавления новых столбцов в таблицу.
+ALTER TABLE products ADD stock_quantity INT;
+- DROP используется для удаления объектов БД, таких как таблицы и индексы.
+DROP TABLE customers;
+
+Каждая из этих категорий команд выполняет важные функции при работе с данными и БД в целом. Они позволяют разработчикам
+и администраторам БД управлять данными, обеспечивать безопасность и целостность данных, а также управлять транзакциями и
+структурой БД.

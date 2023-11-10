@@ -1,0 +1,128 @@
+1. параметризация тестов
+
+В JUnit 5:
+    - @ValueSource: мы можем использовать это с массивом значений типа Short, Byte, Int, Long, Float, Double,
+    Char и String:
+        @ParameterizedTest
+        @ValueSource(strings = { "Hello", "World" })
+        void givenString_TestNullOrNot(String word) {
+            assertNotNull(word);
+        }
+
+    - @EnumSource — передает Enum-константы в качестве параметров методу тестирования:
+        @ParameterizedTest
+        @EnumSource(value = PizzaDeliveryStrategy.class, names = {"EXPRESS", "NORMAL"})
+        void givenEnum_TestContainsOrNot(PizzaDeliveryStrategy timeUnit) {
+            assertTrue(EnumSet.of(PizzaDeliveryStrategy.EXPRESS, PizzaDeliveryStrategy.NORMAL).contains(timeUnit));
+        }
+
+    - @MethodSource — передает (passes) внешние методы, генерирующие потоки:
+          static Stream<String> wordDataProvider() {
+              return Stream.of("foo", "bar");
+          }
+
+В TestNG
+    - При использовании XML-файла аннотируйте метод тестирования с помощью @Parameters:
+        @Test
+          @Parameters({"value", "isEven"})
+          public void
+            givenNumberFromXML_ifEvenCheckOK_thenCorrect(int value, boolean isEven) {
+              Assert.assertEquals(isEven, value % 2 == 0);
+          }
+
+          и укажите данные в файле XML:
+
+          <suite name="My test suite">
+              <test name="numbersXML">
+                  <parameter name="value" value="1"/>
+                  <parameter name="isEven" value="false"/>
+                  <classes>
+                      <class name="baeldung.com.ParametrizedTests"/>
+                  </classes>
+              </test>
+          </suite>
+
+    - @DataProvider для примитивов:
+        @DataProvider(name = "numbers")
+        public static Object[][] evenNumbers() {
+            return new Object[][]{{1, false}, {2, true}, {4, true}};
+        }
+
+        @Test(dataProvider = "numbers")
+        public void givenNumberFromDataProvider_ifEvenCheckOK_thenCorrect
+          (Integer number, boolean expected) {
+            Assert.assertEquals(expected, number % 2 == 0);
+        }
+
+    - @DataProvider для объектов:
+        @Test(dataProvider = "numbersObject")
+        public void givenNumberObjectFromDataProvider_ifEvenCheckOK_thenCorrect
+          (EvenNumber number) {
+            Assert.assertEquals(number.isEven(), number.getValue() % 2 == 0);
+        }
+
+        @DataProvider(name = "numbersObject")
+        public Object[][] parameterProvider() {
+            return new Object[][]{{new EvenNumber(1, false)},
+              {new EvenNumber(2, true)}, {new EvenNumber(4, true)}};
+        }
+
+2. параллельный запуск тестов
+
+В JUnit 5:
+    создать файл junit-platform.properties в нашей папке src/test/resources, чтобы включить параллельное
+    выполнение тестов. Мы включаем функцию распараллеливания, добавив следующую строку в упомянутый файл:
+    junit.jupiter.execution.parallel.enabled = true
+    junit.jupiter.execution.parallel.mode.default = same_thread
+    junit.jupiter.execution.parallel.mode.classes.default = concurrent
+
+    В тестах используем следующие аннотации:
+    @Execution(ExecutionMode.SAME_THREAD) - для обычного запуска теста
+    @Execution(ExecutionMode.CONCURRENT) - для параллельного запуска тестов
+
+В TestNG:
+
+    Одним из способов запуска тестов в многопоточном режиме является выполнение каждого тестового метода в
+    отдельном потоке. Этот вариант существенно снижает время выполнения тестов, так как чем больше потоков для
+    выполнения тестов, тем меньше времени тратится в целом.
+
+    public class ParallelMethodTest {
+
+    @BeforeMethod
+    public void beforeMethod() {
+    long id = Thread.currentThread().getID();
+    System.out.println(«Before test-method. Thread id is: » + id);
+    }
+
+    @Test
+    public void testMethodsOne() {
+    long id = Thread.currentThread().getId();
+    System.out.println(«Simple test-method One. Thread id is: » + id);
+    }
+
+    @Test
+    public void testMethodsTwo() {
+    long id = Thread.currentThread().getId();
+    System.out.println(«Simple test-method Two. Thread id is: » + id);
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+    long id = Thread.currentThread().getId();
+    System.out.println(«After test-method. Thread id is: » + id);
+    }
+    }
+
+    Создадим новый файл с именем methods-test-testng.xml в проекте и напишем туда следующий код:
+
+    <suite name=»Test-method Suite» parallel=»methods» thread-count=»2″ >
+    <test name=»Test-method test» group-by-instances=»true»>
+    <classes>
+    <class name=»com.studyingarticles.parallelism.ParallelMethodTest» />
+    </classes>
+    </test>
+    </suite>
+
+3. Запуск тестов по тегам
+
+mvn test -Dgroups=smoke

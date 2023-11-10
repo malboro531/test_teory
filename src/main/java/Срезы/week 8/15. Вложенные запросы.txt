@@ -1,0 +1,36 @@
+Вложенные запросы, также известные как подзапросы или subquery, представляют собой запросы SQL, которые включены
+внутри других SQL-запросов. Они могут быть использованы для выполнения более сложных операций и для извлечения данных из
+нескольких таблиц в одном запросе. Вложенные запросы могут выполняться в разных частях основного запроса, таких как
+SELECT, FROM, WHERE, HAVING, и JOIN.
+
+1. Простой подзапрос в SELECT:
+
+SELECT name, (SELECT MAX(salary) FROM employees) AS max_salary
+FROM employees;
+В этом запросе внутри SELECT используется подзапрос для извлечения максимальной зарплаты из таблицы employees и
+отображения ее в каждой строке результата.
+
+2. Вложенный запрос в WHERE с использованием оператора IN:
+
+SELECT name
+FROM employees
+WHERE department_id IN (SELECT department_id FROM departments WHERE location = 'New York');
+Этот запрос выбирает имена сотрудников из таблицы employees, у которых department_id соответствует значениям
+department_id, полученным из подзапроса, который выбирает department_id из таблицы departments, где
+location = 'New York'.
+
+3. Вложенный запрос с использованием оператора EXISTS:
+
+SELECT name
+FROM employees
+WHERE EXISTS (SELECT 1 FROM audit_logs WHERE employee_id = employees.id);
+Этот запрос выбирает имена сотрудников из таблицы employees, у которых существуют записи в таблице audit_logs, связанные
+с их id.
+
+4. Вложенный запрос в FROM (подзапрос как источник данных):
+
+SELECT department, AVG(salary) AS avg_salary
+FROM (SELECT department, salary FROM employees) AS subquery
+GROUP BY department;
+В этом примере подзапрос используется в FROM, чтобы создать временную таблицу subquery, которая затем используется для
+выполнения агрегации данных по отделам.

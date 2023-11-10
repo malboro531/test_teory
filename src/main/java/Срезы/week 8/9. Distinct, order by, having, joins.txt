@@ -1,0 +1,54 @@
+1. DISTINCT: Оператор DISTINCT используется для выбора уникальных значений из столбца.
+
+SELECT DISTINCT department FROM employees;
+Этот запрос вернет список уникальных отделов из таблицы employees.
+
+2. ORDER BY: Оператор ORDER BY используется для сортировки результатов запроса по одному или нескольким столбцам.
+Можно указать направление сортировки (ASC - по возрастанию, DESC - по убыванию).
+
+SELECT name, age FROM students ORDER BY age DESC;
+Этот запрос вернет список студентов, отсортированный по возрасту в убывающем порядке.
+
+3. HAVING: Оператор HAVING используется для фильтрации группированных данных. Он работает подобно WHERE, но применяется
+к агрегированным данным после GROUP BY.
+
+SELECT department, AVG(salary) as avg_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > 50000;
+Этот запрос вернет список отделов, у которых средняя зарплата больше 50 000.
+
+4. JOIN (INNER JOIN): Оператор JOIN используется для объединения данных из двух или более таблиц на основе определенного
+условия.
+
+SELECT orders.order_id, customers.customer_name
+FROM orders
+INNER JOIN customers
+ON orders.customer_id = customers.customer_id;
+Этот запрос вернет список заказов и имен клиентов, связанных по полю customer_id
+
+5. LEFT JOIN: LEFT JOIN возвращает все строки из левой таблицы и соответствующие строки из правой таблицы. Если нет
+соответствующих строк в правой таблице, то будут возвращены NULL значения.
+
+SELECT customers.customer_name, orders.order_id
+FROM customers
+LEFT JOIN orders
+ON customers.customer_id = orders.customer_id;
+Этот запрос вернет список клиентов и заказов. Если клиент не сделал заказ, то вместо номера заказа будет NULL.
+
+6. RIGHT JOIN: RIGHT JOIN аналогичен LEFT JOIN, но возвращает все строки из правой таблицы и соответствующие строки из
+левой таблицы.
+
+7. CROSS JOIN: CROSS JOIN выполняет декартово произведение двух таблиц, возвращая все возможные комбинации строк.
+
+SELECT employees.name, departments.department_name
+FROM employees
+CROSS JOIN departments;
+Этот запрос вернет все возможные комбинации имён сотрудников и названий отделов.
+
+8. NATURAL JOIN: NATURAL JOIN выполняет объединение на основе столбцов с одинаковыми именами в обеих таблицах.
+
+SELECT customers.customer_name, orders.order_id
+FROM customers
+NATURAL JOIN orders;
+Этот запрос вернет список клиентов и заказов, объединенных по полю customer_id.

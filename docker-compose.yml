@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.16.1
+    container_name: elasticsearch
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "9201:9200"
+      - "9300:9300"
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    networks:
+      - elastic
+
+  logstash:
+    image: logstash:7.16.1
+    container_name: logstash
+    environment:
+      discovery.seed_hosts: logstash
+      LS_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:rw
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:rw
+    ports:
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "5044:5044"
+      - "9600:9600"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+
+  kibana:
+    image: kibana:7.16.1
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+
+networks:
+  elastic:
+    driver: bridge

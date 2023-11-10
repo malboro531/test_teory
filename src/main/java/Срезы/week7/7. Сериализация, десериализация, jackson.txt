@@ -1,0 +1,69 @@
+Сериализация и десериализация - это процессы преобразования объектов в другой формат (например, в строку JSON или
+байтовый поток) для передачи или сохранения, а затем обратного преобразования этих данных обратно в объекты.
+
+Jackson - это библиотека для работы с форматом JSON в языке программирования Java.
+
+Сериализация (Преобразование объектов Java в JSON).
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Person person = new Person("John", 30);
+        String json = objectMapper.writeValueAsString(person);
+
+        System.out.println(json); // {"name":"John","age":30}
+    }
+}
+
+Десериализация (Преобразование JSON в объекты Java).
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String json = "{\"name\":\"Alice\",\"age\":25}";
+        Person person = objectMapper.readValue(json, Person.class);
+
+        System.out.println(person.getName()); // Выводит "Alice"
+        System.out.println(person.getAge());  // Выводит 25
+    }
+}
+
+Jackson также обеспечивает поддержку аннотаций для настройки процесса сериализации и десериализации, а также множество
+других возможностей для работы с JSON в Java.
+
+1. Этот код указывает Jackson, что все поля класса должны быть видимыми при сериализации и десериализации:
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class MyObject {
+    private String name;
+    private int age;
+}
+
+2. Аннотация @JsonProperty может использоваться для указания имени поля в JSON:
+
+public class Person {
+    @JsonProperty("full_name")
+    private String name;
+}
+
+3. Аннотация @JsonIgnore используется для игнорирования определенного поля при сериализации и десериализации:
+
+public class Person {
+    private String name;
+
+    @JsonIgnore
+    private String password;
+}
+
+4. Аннотация @JsonInclude позволяет настроить, какие свойства объекта должны быть включены в JSON-вывод:
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Person {
+    private String name;
+    private String address;
+
+    // Геттеры и сеттеры
+}
+Теперь при сериализации, если address равен null или пустой строке, он будет исключен из JSON.

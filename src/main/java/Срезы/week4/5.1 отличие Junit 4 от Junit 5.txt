@@ -1,0 +1,40 @@
+Импорт.
+
+JUnit5 использует новый пакет org.junit.jupiter для своих аннотаций и классов. Например, org.junit.
+Test становится org.junit.jupiter.api.Test.
+
+Аннотации.
+
+Аннотация @Test больше не имеет параметров, поскольку все они были перемещены в функцию.
+
+@Test(expected = Exception.class)
+public void testThrowsException() throws Exception {
+    // ...
+}
+В JUnit5 тот же самый тест выглядит так:
+
+@Test
+void testThrowsException() throws Exception {
+    Assertions.assertThrows(Exception.class, () -> {
+        //...
+    });
+}
+
+Также изменились аннотации:
+@Before стала @BeforeEach
+@After стала @AfterEach
+@BeforeClass стала @BeforeAll
+@AfterClass стала @AfterAll
+@Ignore стала @Disabled
+@Category стала @Tag
+@Rule и @ClassRule удалены; используйте вместо них @ExtendWith и @RegisterExtension
+
+JUnit5 использует функционал Java 8 или более поздних релизов, например лямбда-функции, делая тесты более
+мощными и простыми в поддержке
+
+JUnit 5 представил некоторые новые утверждения:
+assertIterableEquals() выполняет глубокую проверку двух итерируемых коллекций (iterables) с использованием equals()
+assertLinesMatch() проверяет, совпадают ли два списка строк. Принимает регулярные выражения в аргументе 'expected'
+assertAll() группирует несколько утверждений вместе. Дополнительным преимуществом является то, что все утверждения
+выполняются, даже если отдельные утверждения не выполняются
+assertThrows() и assertDoesNotThrow() заменили свойство 'expected' в аннотации @Test

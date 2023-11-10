@@ -1,0 +1,41 @@
+Порядок операторов в SQL может зависеть от конкретной задачи и запроса, но обычно SQL-запросы строятся в следующем
+порядке:
+
+1. SELECT: Оператор SELECT используется для выбора данных из базы данных. Он указывает, какие столбцы или вычисления должны
+быть включены в результат запроса.
+
+SELECT first_name, last_name FROM employees;
+
+2. FROM: Оператор FROM определяет, из какой таблицы или набора таблиц будут выбраны данные.
+
+SELECT product_name, price FROM products_table;
+
+3. WHERE: Оператор WHERE позволяет фильтровать данные, выбирая только строки, которые соответствуют определённому
+условию.
+
+SELECT order_id, order_date FROM orders WHERE customer_id = 123;
+
+4. GROUP BY: Оператор GROUP BY используется для группировки строк по значениям определённых столбцов. Это часто
+используется с агрегатными функциями, такими как SUM, COUNT, AVG и другими.
+
+SELECT department, AVG(salary) FROM employees GROUP BY department;
+
+5. HAVING: Оператор HAVING применяется к данным после оператора GROUP BY и используется для фильтрации результатов
+группировки с использованием агрегатных функций.
+
+SELECT department, AVG(salary) FROM employees GROUP BY department HAVING AVG(salary) > 50000;
+
+6. ORDER BY: Оператор ORDER BY позволяет упорядочивать результаты запроса по одному или нескольким столбцам в порядке
+возрастания (ASC) или убывания (DESC).
+
+SELECT product_name, price FROM products ORDER BY price DESC;
+
+7. LIMIT (или TOP в некоторых СУБД): Оператор LIMIT (или TOP в Microsoft SQL Server) используется для ограничения
+количества возвращаемых строк в результате запроса.
+
+SELECT product_name, price FROM products LIMIT 10;
+
+8. OFFSET: Оператор OFFSET позволяет пропустить определённое количество строк перед началом выборки результатов. Обычно
+используется с LIMIT для создания пагинации.
+
+SELECT product_name, price FROM products LIMIT 10 OFFSET 20;

@@ -1,0 +1,86 @@
+1. TestNG группировка через xml
+    <suite name="suite">
+        <test name="test suite">
+            <classes>
+                <class name="RegistrationTest"/>
+                <class name="SignInTest"/>
+            </classes>
+        </test>
+    </suite>
+
+Помимо группировки классов, TestNG также может группировать методы с помощью аннотации
+@Test (groups = "groupName"):
+    @Test(groups = "regression")
+    public void givenNegativeNumber_sumLessthanZero_thenCorrect() {
+        int sum = numbers.stream().reduce(0, Integer::sum);
+        Assert.assertTrue(sum < 0);
+    }
+
+2. В JUnit 5 мы можем использовать аннотации @RunWith, @SelectPackages и @SelectClasses для группировки
+тест-кейсов и запуска их как набора.
+
+Если мы хотим сгруппировать тест-кейсы различных пакетов для запуска вместе в Suite нам нужно использовать
+аннотацию @SelectPackages:
+    @RunWith(JUnitPlatform.class)
+    @SelectPackages({ "org.baeldung.java.suite.childpackage1", "org.baeldung.java.suite.childpackage2" })
+    public class SelectPackagesSuiteUnitTest {
+    }
+
+Если мы хотим, чтобы определенные тестовые классы работали вместе, JUnit 5 обеспечивает нам такую гибкость
+с помощью @SelectClasses:
+    @RunWith(JUnitPlatform.class)
+    @SelectClasses({Class1UnitTest.class, Class2UnitTest.class})
+    public class SelectClassesSuiteUnitTest {
+    }
+
+группировки и одновременного выполнения нескольких тестов с помощью аннотации @Suite:
+    @RunWith(Suite.class)
+    @Suite.SuiteClasses({ RegistrationTest.class, SignInTest.class })
+    public class SuiteTest {
+    }
+
+Пропуск теста
+
+1. В JUnit 5
+    @Disable используется для отключения или игнорирования тестового класса или тестового метода из набора тестов.
+
+2. TestNG. способы пропустить выполнение @Test −
+   - Используйте параметр enabled=false в @Test. По умолчанию для этого параметра установлено значение True.
+         @Test(enabled = false)
+            public void testMethodOne() {
+
+                System.out.println("Test method one.");
+            }
+
+   - Используйте throw new SkipException(строковое сообщение), чтобы пропустить тест.
+        public class Skip_Ignore_Test {
+        @Test
+         public void skip_Ignore_Test (){
+         String a ="Skip / Ignore Test";
+         if(a.equals("Skip / Ignore Test")){
+         throw new SkipException("Skipping / Ignoring - Script not Ready for Execution ");
+         }else{
+         System.out.println("In else condition");
+         }
+         System.out.println("Out of the if else condition");
+         }
+         @Test
+         public void out_Of_Skip_Test(){
+         System.out.println("No need to skip / ignore test");
+         }
+        }
+
+   - указать в xml
+       <class name=" package_Name.Class_Name"/>;
+               <methods/>;
+               <exclude name="method_2"/>;
+             </methods/>;
+               </class/>;
+
+3. запуск через градл
+    task launchByTagTest(type: Test) {
+       useJUnitPlatform {
+            includeTags("registration-api", "documents-api")
+        }
+        systemProperty 'junit.jupiter.extensions.autodetection.enabled', true
+    }
